@@ -42,20 +42,21 @@ is_true(Question) :-
 animal(dog) :- check('has fur'), check('says woof'), check('is it man best firend'), is_true_guess('Is it a pupper?').
 animal(cat) :- check('has fur'), check('says meow'), check('is it evil'), is_true_guess('Is it a pussy cat?'). 
 animal(duck) :- check('has feathers'), check('says quack'), check('does it fly'), is_true_guess('Is it a quack master?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
 
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
+animal(onea) :- check('11'), check('11a'), is_true_guess('is it 1a').
+animal(oneb) :- check('11'), check('11b'), is_true_guess('is it 1b').
 
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
-% animal(duck) :- check('has feathers'), check('says quack'), is_true_guess('Is it a duck?').
+animal(twoa) :- check('22'), check('2aa'), is_true_guess('is it twoa').
+animal(twob) :- check('22'), check('22b'), is_true_guess('is it twob').
+animal(twoc) :- check('22'), check('22c'), is_true_guess('is it twoc').
+animal(twod) :- check('23'), check('23d'), is_true_guess('is it twod').
+animal(twoe) :- check('23'), check('23e'), is_true_guess('is it twoe').
+
+animal(threea) :- check('33'), check('3aa'), is_true_guess('is it 3a').
+animal(threeb) :- check('33'), check('3bb'), is_true_guess('is it 3b').
+animal(threec) :- check('33'), check('3cc'), is_true_guess('is it 3c').
+animal(threed) :- check('33'), check('3dd'), is_true_guess('is it 3d').
+animal(threee) :- check('33'), check('3ee'), is_true_guess('is it 3e').
 
 
 animal(none) :- write('sorry im not a mind reader.'),nl,  
