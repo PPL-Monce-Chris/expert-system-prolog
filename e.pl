@@ -5,22 +5,23 @@
 
 
 begin :-
-    write('Welcome to the Expert System about Encryption Algorithms !,
-        I am going to ask questions about encryption features.
-        please answer yes. or no.
-        Ready?    '),
-        read(yes) -> encryption(_); write('Good Bye.') , halt.
+    nl, write('Welcome to the Expert System about Encryption Algorithms,'), nl,
+        write('I am going to ask questions about encryption features.'), nl, nl, 
+        write('please answer yes. or no.'), nl, 
+        write('Ready?    '), nl, nl, 
+        read(yes) -> encryption(_); nl, write('Good Bye.') , halt.
 
 
 is_true_guess(Guess) :-
     undo,
     format('~w?~n', [Guess]),
-    read(yes), write('Cool beans!'),
-    write('would you like to try again?'),nl,
+    read(yes), write('Cool!'), nl, nl,
+    write('Would you like to try again?'),nl,
     write('type yes. or no.'),nl,
     read(yes)-> begin, read(no)-> halt;
-    write('Well get over it.'),nl,
-    write('would you like to try again? type yes. or no.   '),
+    write('sorry, maybe we will get it next time.'),nl,
+    write('Would you like to try again?'),nl , 
+    write('type yes. or no.   '),nl , 
     read(yes)-> begin; halt.
 
 
@@ -68,8 +69,8 @@ encryption(trans) :- checkNot('secured?'), check('Was it used by the Romans?'), 
 encryption(caeser) :- checkNot('secured?'), check('Was it discovered by Caeser?'), check('Does it use the substitution of letters?'), is_true_guess('Is it Caesar Cipher?').
 
 
-encryption(none) :- write('sorry im not a mind reader.'),nl,
-    write('would you like to try again? type yes. or no.'),
+encryption(none) :- nl, write('Sorry im not a mind reader.'), nl, nl,
+    write('Would you like to try again?'), nl , nl,  write('type yes. or no.'), nl, nl,
     read(yes)-> undo, begin; halt.
 
 undo :- retract(yes(_)),fail.
