@@ -27,43 +27,45 @@ is_true_guess(Guess) :-
 :- dynamic yes/1.
 :- dynamic  no/1.
 
-check(Question) :- (yes(Question) -> true ;
+check(Question) :- (yes(Question) -> true;
      (no(Question) -> fail ;
       is_true(Question) ) ).
 
+checkSecure(Question) :- (yes(Question) -> true;
+    (no(Question) -> fail ;
+     write('Is it '), is_true(Question) ) ).
+
+
+checkNot(Question) :- (no(Question) -> true;
+    (yes(Question) -> fail ;
+     write('Is it not '), is_true(Question) ) ).
+
 
 is_true(Question) :-
-    encryption(Question) -> true , assertz(not(encryption(Question)));
     ((format('~w?~n', [Question]), read(Response),
-    (Response == yes -> assert(yes(Question));
-    Response == no -> assert(no(Question)), fail;
+    (Response == yes -> assertz(yes(Question)), assertz(+/(no(Question)));
+    Response == no -> assertz(no(Question)), assertz(+/(yes(Question))), fail;
     write('input not recognized'), halt))).
 
 
-% encryption(des) :- check(invented), check('uses double or triple encryption'), check('not secured'), is_true_guess('Is it DES encryption?').
-% encryption(aes) :- check('invented by NIST'), check('uses a simple mathematical framework'), check('secured'), is_true_guess('Is it AES encryption?').
-% encryption(mars) :- check(invented), check('uses block cipher'), check('not secured'), is_true_guess('Is it MARS encryption?').
+encryption(rsa) :- checkSecure('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use assymetric-key encryption?'), is_true_guess('Is it RSA Encryption?').
+encryption(rc5) :- checkSecure('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use block cipher?'), is_true_guess('Is it RC5 Encryption?').
+encryption(ellip) :- checkSecure('secured?'), check('Was it discovered by R. Propper?'), check('Does it use assymetric-key encryption?'), is_true_guess('Is it Elliptic Curve Encryption?').
+encryption(rc6) :- checkSecure('secured?'), check('Was it derived from RC5?'), check('Does it use block cipher?'), is_true_guess('Is it RC6 Encryption?').
+encryption(aes) :- checkSecure('secured?'), check('Was it invented by NIST?'), check('Does it use a simple mathematical framework?'), is_true_guess('Is it AES encryption?').
 
+encryption(des) :- checkNot('secured?'), check('Was it invented by IBM?'), check('Does it use double or triple encryption?'), is_true_guess('Is it DES encryption?').
+encryption(mars) :- checkNot('secured?'), check('Was it invented by IBM?'), check('Does it use block cipher?'), is_true_guess('Is it MARS encryption?').
 
-encryption(des) :- check('not secured'), check('invented by IBM'), check('uses double or triple encryption'), is_true_guess('Is it DES encryption?').
-encryption(mars) :- check('not secured'), check('invented by IBM'), check('uses block cipher'), is_true_guess('Is it MARS encryption?').
+encryption(rc2) :- checkNot('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use a 64-bit block cipher?'), is_true_guess('Is it RC2 encryption?').
+encryption(rc4) :- checkNot('secured?'), check('Was it invented by Ron Rivest?'), check('Is the algorithm still not released?'), is_true_guess('Is it RC4 Encryption?').
 
-encryption(rc2) :- check('not secured'), check('invented by Ron Rivest'), check('uses 64-bit block cipher'), is_true_guess('Is it RC2 encryption?').
-encryption(rc4) :- check('not secured'), check('invented by Ron Rivest'), check('algorithm has not been released'), is_true_guess('Is it RC4 Encryption?').
-
-encryption(idea) :- check('not secured'), check('designed by James Massay'), check('uses symmetric-key block cipher'), is_true_guess('Is it IDEA encryption?').
-encryption(blow) :- check('not secured'), check('built by Bruce Schneier'), check('uses symmetric-key block cipher'), is_true_guess('Is it Blowfish Encryption?').
-encryption(two) :- check('not secured'), check('succesor to Blowfish'), check('can be implemented on hardware and smartcards'), is_true_guess('Is it Twofish Encryption?').
-encryption(three) :- check('not secured'), check('created has the Skein Hash Function'), check('uses block cipher'), is_true_guess('Is it Threefish Encryption?').
-encryption(trans) :- check('not secured'), check('used by the Romans'), check('uses double or triple encryption'), is_true_guess('Is it Transposition?').
-encryption(caeser) :- check('not secured'), check('discovered by Caeser'), check('uses substitution of letters'), is_true_guess('Is it Caesar Cipher?').
-
-
-encryption(rsa) :- check('secured'), check('invented by Ron Rivest'), check('uses assymetric-key encryption'), is_true_guess('Is it RSA Encryption?').
-encryption(rc5) :- check('secured'), check('invented by Ron Rivest'), check('uses block cipher'), is_true_guess('Is it RC5 Encryption?').
-encryption(ellip) :- check('secured'), check('discovered by R. Propper'), check('uses assymetric-key encryption'), is_true_guess('Is it Elliptic Curve Encryption?').
-encryption(rc6) :- check('secured'), check('derived from RC5'), check('uses block cipher'), is_true_guess('Is it RC6 Encryption?').
-encryption(aes) :- check('secured'), check('invented by NIST'), check('uses a simple mathematical framework'), is_true_guess('Is it AES encryption?').
+encryption(idea) :- checkNot('secured?'), check('Was it designed by James Massay?'), check('Does it use symmetric-key block ciphers?'), is_true_guess('Is it IDEA encryption?').
+encryption(blow) :- checkNot('secured?'), check('Was it built by Bruce Schneier?'), check('Does it use symmetric-key block ciphers?'), is_true_guess('Is it Blowfish Encryption?').
+encryption(two) :- checkNot('secured?'), check('Was it a succesor to Blowfish?'), check('Can it be implemented on hardware and smartcards?'), is_true_guess('Is it Twofish Encryption?').
+encryption(three) :- checkNot('secured?'), check('Does it use the Skein Hash Function?'), check('Does it use block cipher?'), is_true_guess('Is it Threefish Encryption?').
+encryption(trans) :- checkNot('secured?'), check('Was it used by the Romans?'), check('Does it use double or triple encryption?'), is_true_guess('Is it Transposition?').
+encryption(caeser) :- checkNot('secured?'), check('Was it discovered by Caeser?'), check('Does it use the substitution of letters?'), is_true_guess('Is it Caesar Cipher?').
 
 
 encryption(none) :- write('sorry im not a mind reader.'),nl,
