@@ -3,66 +3,76 @@
 %-- Programming Assignment #3
 %-- 11/15/19
 
-begin :- 
-    write('Welcome to the Expert System about _____ !,
-        I am going to ask questions about _____ features.
-        please answer yes. or no.
-        Ready?    '),
-        read(yes) -> animal(_); write('Good Bye.') , halt.
+
+begin :-
+    nl, write('Welcome to the Expert System about Encryption Algorithms,'), nl,
+        write('I am going to ask questions about encryption features.'), nl, nl, 
+        write('please answer yes. or no.'), nl, 
+        write('Ready?    '), nl, nl, 
+        read(yes) -> encryption(_); nl, write('Good Bye.') , halt.
 
 
-is_true_guess(Guess) :- 
+is_true_guess(Guess) :-
     undo,
     format('~w?~n', [Guess]),
-    read(yes), write('Cool beans!'),
-    write('would you like to try again?'),nl,
+    read(yes), write('Cool!'), nl, nl,
+    write('Would you like to try again?'),nl,
     write('type yes. or no.'),nl,
     read(yes)-> begin, read(no)-> halt;
-    write('Well get over it.'),nl,
-    write('would you like to try again? type yes. or no.   '), 
+    write('sorry, maybe we will get it next time.'),nl,
+    write('Would you like to try again?'),nl , 
+    write('type yes. or no.   '),nl , 
     read(yes)-> begin; halt.
 
 
 :- dynamic yes/1.
 :- dynamic  no/1.
 
-check(Question) :- (yes(Question) -> true ;
+check(Question) :- (yes(Question) -> true;
      (no(Question) -> fail ;
       is_true(Question) ) ).
 
+checkSecure(Question) :- (yes(Question) -> true;
+    (no(Question) -> fail ;
+     write('Is it '), is_true(Question) ) ).
 
-is_true(Question) :- 
-    animal(Question) -> true ;
+
+checkNot(Question) :- (no(Question) -> true;
+    (yes(Question) -> fail ;
+     write('Is it not '), is_true(Question) ) ).
+
+
+is_true(Question) :-
     ((format('~w?~n', [Question]), read(Response),
-    (Response == yes -> assert(yes(Question));
-    Response == no -> assert(no(Question)), fail;
-    write('incorrect choice'), halt))).
-        
-
-animal(dog) :- check('has fur'), check('says woof'), check('is it man best firend'), is_true_guess('Is it a pupper?').
-animal(cat) :- check('has fur'), check('says meow'), check('is it evil'), is_true_guess('Is it a pussy cat?'). 
-animal(duck) :- check('has feathers'), check('says quack'), check('does it fly'), is_true_guess('Is it a quack master?').
-
-animal(onea) :- check('11'), check('11a'), is_true_guess('is it 1a').
-animal(oneb) :- check('11'), check('11b'), is_true_guess('is it 1b').
-
-animal(twoa) :- check('22'), check('2aa'), is_true_guess('is it twoa').
-animal(twob) :- check('22'), check('22b'), is_true_guess('is it twob').
-animal(twoc) :- check('22'), check('22c'), is_true_guess('is it twoc').
-animal(twod) :- check('23'), check('23d'), is_true_guess('is it twod').
-animal(twoe) :- check('23'), check('23e'), is_true_guess('is it twoe').
-
-animal(threea) :- check('33'), check('3aa'), is_true_guess('is it 3a').
-animal(threeb) :- check('33'), check('3bb'), is_true_guess('is it 3b').
-animal(threec) :- check('33'), check('3cc'), is_true_guess('is it 3c').
-animal(threed) :- check('33'), check('3dd'), is_true_guess('is it 3d').
-animal(threee) :- check('33'), check('3ee'), is_true_guess('is it 3e').
+    (Response == yes -> assertz(yes(Question)), assertz(+/(no(Question)));
+    Response == no -> assertz(no(Question)), assertz(+/(yes(Question))), fail;
+    write('input not recognized'), halt))).
 
 
-animal(none) :- write('sorry im not a mind reader.'),nl,  
-    write('would you like to try again? type yes. or no.'),
+encryption(rsa) :- checkSecure('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use assymetric-key encryption?'), is_true_guess('Is it RSA Encryption?').
+encryption(rc5) :- checkSecure('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use block cipher?'), is_true_guess('Is it RC5 Encryption?').
+encryption(ellip) :- checkSecure('secured?'), check('Was it discovered by R. Propper?'), check('Does it use assymetric-key encryption?'), is_true_guess('Is it Elliptic Curve Encryption?').
+encryption(rc6) :- checkSecure('secured?'), check('Was it derived from RC5?'), check('Does it use block cipher?'), is_true_guess('Is it RC6 Encryption?').
+encryption(aes) :- checkSecure('secured?'), check('Was it invented by NIST?'), check('Does it use a simple mathematical framework?'), is_true_guess('Is it AES encryption?').
+
+encryption(des) :- checkNot('secured?'), check('Was it invented by IBM?'), check('Does it use double or triple encryption?'), is_true_guess('Is it DES encryption?').
+encryption(mars) :- checkNot('secured?'), check('Was it invented by IBM?'), check('Does it use block cipher?'), is_true_guess('Is it MARS encryption?').
+
+encryption(rc2) :- checkNot('secured?'), check('Was it invented by Ron Rivest?'), check('Does it use a 64-bit block cipher?'), is_true_guess('Is it RC2 encryption?').
+encryption(rc4) :- checkNot('secured?'), check('Was it invented by Ron Rivest?'), check('Is the algorithm still not released?'), is_true_guess('Is it RC4 Encryption?').
+
+encryption(idea) :- checkNot('secured?'), check('Was it designed by James Massay?'), check('Does it use symmetric-key block ciphers?'), is_true_guess('Is it IDEA encryption?').
+encryption(blow) :- checkNot('secured?'), check('Was it built by Bruce Schneier?'), check('Does it use symmetric-key block ciphers?'), is_true_guess('Is it Blowfish Encryption?').
+encryption(two) :- checkNot('secured?'), check('Was it a succesor to Blowfish?'), check('Can it be implemented on hardware and smartcards?'), is_true_guess('Is it Twofish Encryption?').
+encryption(three) :- checkNot('secured?'), check('Does it use the Skein Hash Function?'), check('Does it use block cipher?'), is_true_guess('Is it Threefish Encryption?').
+encryption(trans) :- checkNot('secured?'), check('Was it used by the Romans?'), check('Does it use double or triple encryption?'), is_true_guess('Is it Transposition?').
+encryption(caeser) :- checkNot('secured?'), check('Was it discovered by Caeser?'), check('Does it use the substitution of letters?'), is_true_guess('Is it Caesar Cipher?').
+
+
+encryption(none) :- nl, write('Sorry im not a mind reader.'), nl, nl,
+    write('Would you like to try again?'), nl , nl,  write('type yes. or no.'), nl, nl,
     read(yes)-> undo, begin; halt.
 
-undo :- retract(yes(_)),fail. 
-undo :- retract(no(_)),fail. 
+undo :- retract(yes(_)),fail.
+undo :- retract(no(_)),fail.
 undo.
